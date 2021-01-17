@@ -1,17 +1,17 @@
-const path = require("path");
-const fs = require("fs");
+const path = require("path"); // bawaan dari node js
+const fs = require("fs"); // fs = filesystem
 
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
-const ImageMinPlugin = require("imagemin-webpack-plugin").default;
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin"); // copy
+const HTMLWebpackPlugin = require("html-webpack-plugin"); // membaca html
+const ImageMinPlugin = require("imagemin-webpack-plugin").default; // untuk meminify image
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // meng ekstrak css yang ada
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");// untuk menghapus build yang reload
 
 const environment = require("./configs/env");
 
 const templateFiles = fs.readdirSync(
   path.resolve(__dirname, environment.paths.source, "templates")
-);
+); // read filesystem tujuan ke folder templates 
 const htmlPluginEntries = templateFiles.map(
   (template) =>
     new HTMLWebpackPlugin({
@@ -21,11 +21,11 @@ const htmlPluginEntries = templateFiles.map(
       template: path.resolve(environment.paths.source, "templates", template),
       favicon: path.resolve(environment.paths.source, "images", "favicon.ico"),
     })
-);
+); // config untuk input dari file html, dia mau template datang dari folder templates. dan di bawahnya ada favicon
 
 module.exports = {
   entry: {
-    app: path.resolve(environment.paths.source, "js", "app.js"),
+    app: path.resolve(environment.paths.source, "js", "app.js"), //semua berawal dari sini
   },
   output: {
     path: environment.paths.output,
@@ -35,13 +35,13 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"], // jika di tempakan di awal maka akan di baca terakhir
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         include: environment.paths.source,
-        use: ["babel-loader"],
+        use: ["babel-loader"], // menggunakan library babel-loader ini agar tidak mencantumkan require di app.js
       },
       {
         test: /\.(png|gif|jpg|jpeg)$/,
@@ -72,13 +72,13 @@ module.exports = {
     ],
   },
 
-  plugins: [
+  plugins: [ // tempatnya inisiasi
     new MiniCssExtractPlugin({
       filename: "css/[name].minify.css",
     }),
     new ImageMinPlugin({ test: /\.(jpg|jpeg|png|gif|svg)$/i }),
     new CleanWebpackPlugin({
-      verbose: true,
+      verbose: true, // membersihkan hasil build
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -101,5 +101,5 @@ module.exports = {
       ],
     }),
   ].concat(htmlPluginEntries),
-  target: "web",
+  target: "web", // biar tau bakan di deploy kemana
 };

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const { merge } = require("webpack-merge");
+const { merge } = require("webpack-merge"); // membuat webpack-merge untuk menggabukan ini dan 
 
 const webpackConfiguration = require("../webpack.config");
 const environment = require("./env");
@@ -8,14 +8,14 @@ module.exports = merge(webpackConfiguration, {
   mode: "development",
 
   /* Manage source maps generation process */
-  devtool: "eval-source-map",
+  devtool: "eval-source-map", // membantu menghasilkan code sama ketika development
 
   /* Development Server Configuration */
   devServer: {
     contentBase: environment.paths.output,
     watchContentBase: true,
     publicPath: "/",
-    open: true,
+    open: true, // langsung membukakann browser lengkap dengan localhost sesuai setup kita
     historyApiFallback: true,
     compress: true,
     overlay: true,
@@ -34,5 +34,5 @@ module.exports = merge(webpackConfiguration, {
   },
 
   /* Additional plugins configuration */
-  plugins: [],
+  plugins: [], 
 });
